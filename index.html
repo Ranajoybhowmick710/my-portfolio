@@ -90,7 +90,10 @@
 .light-mode .contact-form { background: #dce8f8; }
 .light-mode .contact-link { background: #dce8f8; }
 .light-mode .boot-lines { color: #007733; }
-.light-mode nav { background: linear-gradient(180deg,rgba(244,248,255,0.97) 0%,transparent 100%); }
+.light-mode nav{
+  background: linear-gradient(180deg,var(--dark-surface) 0%,transparent 100%);
+  color: var(--text-primary);
+}
 .light-mode .proj-link { color: #1a3a70; border-color: #0055bb33; }
 .light-mode .proj-link:hover { color: #0055bb; }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -101,6 +104,9 @@ body{
   color:var(--text-primary);
   overflow-x:hidden;
   cursor:none;
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  transition: 0.3s ease;
 }
 /* ── CUSTOM CURSOR ── */
 /* ── CUSTOM CURSOR ── */
@@ -708,6 +714,11 @@ footer{
   display:none;position:fixed;inset:0;z-index:800;
   background:rgba(2,4,8,0.97);backdrop-filter:blur(20px);
   flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  background: var(--dark-bg); /* instead of rgba(2,4,8,0.97) */
+}
+
+.light-mode .mobile-menu{
+  background: var(--dark-bg); /* auto switches to light */
 }
 .mobile-menu.open{display:flex}
 .mobile-menu a{
