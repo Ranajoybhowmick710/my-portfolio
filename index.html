@@ -6,7 +6,13 @@
 <title>Ranajoy Bhowmick | AI & ML Portfolio</title>
 <meta name="description" content="Futuristic portfolio of Ranajoy Bhowmick, Computer Science student specializing in AI & ML"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,100;0,300;0,400;0,600;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?
+family=Orbitron:wght@400;700;900
+&family=Exo+2
+&family=Share+Tech+Mono
+&family=Bebas+Neue
+&family=JetBrains+Mono
+&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -34,9 +40,9 @@
   --font-body:'Segoe UI','Helvetica Neue',Arial,sans-serif;
 }
 .light-mode {
-  --dark-bg: #a9b1c0;
-  --dark-surface: #a9b1c0;
-  --dark-card: #a9b1c0;
+  --dark-bg: #e4f5ff;
+  --dark-surface: #e4f5ff;
+  --dark-card: #e4f5ff;
   --text-primary: #0a1628;
   --text-secondary: #1a3a70;
   --neon-blue: #0055bb;
@@ -163,30 +169,41 @@ body.light-theme #cursor{
 body.light-theme #cursor-ring{
   border-color: #333;
 }
-/* ── BOOT SCREEN ── */
-#boot-screen{
+/* ── LOADER (ranajoy-style) ── */
+#ld{
   position:fixed;inset:0;z-index:10000;
   background:#000;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  font-family:'Share Tech Mono',monospace;
+  align-items:center;justify-content:center;gap:1.8rem;
+  transition:opacity .6s;
 }
-.boot-logo{
+#ld.hide{opacity:0;pointer-events:none}
+.ldl{display:flex;gap:4px}
+.ldl span{
   font-family:'Orbitron',monospace;
-  font-size:clamp(2rem,5vw,4rem);font-weight:900;
-  color:var(--neon-blue);
-  text-shadow:var(--glow-blue);letter-spacing:0.2em;
-  margin-bottom:2rem;opacity:0;
+  font-weight:900;
+  letter-spacing:4px;
+  font-size:clamp(3.5rem,10vw,7rem);
+  color:#fff;opacity:0;transform:translateY(28px);
+  transition:opacity .25s,transform .3s cubic-bezier(.22,1,.36,1),color .1s;
 }
-.boot-lines{color:#00ff88;font-size:0.8rem;line-height:2;text-align:left;width:min(500px,90vw)}
-.boot-line{opacity:0;transform:translateX(-20px)}
-.boot-bar-wrap{
-  width:min(400px,80vw);margin-top:2rem;
-  height:4px;background:#111;border-radius:2px;
-  border:1px solid #00ff8844;overflow:hidden;
+.ldl span.on{opacity:1;transform:none}
+.ld-track{
+  width:200px;height:2px;
+  background:rgba(255,255,255,.1);
+  border-radius:99px;overflow:hidden;
 }
-.boot-bar{height:100%;width:0;background:linear-gradient(90deg,#00ff88,#00d4ff);
-  box-shadow:0 0 10px #00ff88;transition:width 0.1s linear}
-.boot-pct{color:#00ff88;font-size:0.75rem;margin-top:0.5rem;text-align:center}
+.ld-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,#00d4aa,#00d4ff);
+  border-radius:99px;
+}
+.ld-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;color:rgba(0,212,170,.6);
+  letter-spacing:4px;text-transform:uppercase;
+  opacity:0;transition:opacity .4s;
+}
+.ld-sub.on{opacity:1}
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:#000}
@@ -832,20 +849,14 @@ footer{
 <div id="scroll-progress"></div>
 <canvas id="bg-canvas"></canvas>
 
-<!-- BOOT SCREEN -->
-<div id="boot-screen">
-  <div class="boot-logo" id="boot-logo">RB//SYS</div>
-  <div class="boot-lines" id="boot-lines">
-    <div class="boot-line" id="bl1">&gt; Initializing neural interface...</div>
-    <div class="boot-line" id="bl2">&gt; Loading developer profile [RANAJOY BHOWMICK]</div>
-    <div class="boot-line" id="bl3">&gt; Compiling skill matrix... OK</div>
-    <div class="boot-line" id="bl4">&gt; Connecting to AI core... OK</div>
-    <div class="boot-line" id="bl5">&gt; Portfolio system ONLINE ✓</div>
+<!-- LOADER (ranajoy-style) -->
+<div id="ld">
+  <div class="ldl" id="ldl">
+    <span>R</span><span>A</span><span>N</span><span>A</span><span>J</span><span>O</span><span>Y</span>
   </div>
-  <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
-  <div class="boot-pct" id="boot-pct">0%</div>
+  <div class="ld-track"><div class="ld-fill" id="ldf"></div></div>
+  <div class="ld-sub" id="ldsub">Initializing Portfolio</div>
 </div>
-
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
   <button class="close-menu" id="close-menu">✕</button>
@@ -1262,36 +1273,79 @@ window.addEventListener('scroll',()=>{
   });
 })();
 
-// ── BOOT ANIMATION ──
+// ── LOADER ANIMATION (ranajoy-style) ──
 (function(){
-  const boot=document.getElementById('boot-screen');
-  const logo=document.getElementById('boot-logo');
-  const bar=document.getElementById('boot-bar');
-  const pct=document.getElementById('boot-pct');
-  const lines=['bl1','bl2','bl3','bl4','bl5'];
-  setTimeout(()=>{logo.style.opacity='1';logo.style.transition='opacity 0.5s'},300);
-  let p=0;
-  const interval=setInterval(()=>{
-    p+=Math.random()*4+1;
-    if(p>100)p=100;
-    bar.style.width=p+'%';
-    pct.textContent=Math.floor(p)+'%';
-    if(p>=100){clearInterval(interval);
-      setTimeout(()=>{
-        boot.style.transition='opacity 0.8s,transform 0.8s';
-        boot.style.opacity='0';boot.style.transform='scale(1.05)';
-        setTimeout(()=>{boot.style.display='none';startMain()},800);
-      },400);
-    }
-  },60);
-  lines.forEach((id,i)=>{
-    setTimeout(()=>{
-      const el=document.getElementById(id);
-      el.style.transition='all 0.3s';
-      el.style.opacity='1';el.style.transform='none';
-    },400+i*350);
+  var CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+      NAME=['R','A','N','A','J','O','Y'],
+      spans=document.querySelectorAll('#ldl span'),
+      fill=document.getElementById('ldf'),
+      sub=document.getElementById('ldsub'),
+      prog=0,barDone=false,lettersDone=false;
+
+  // Progress bar
+  var biv=setInterval(function(){
+    prog=Math.min(100,prog+Math.random()*2.5+1.5);
+    fill.style.width=prog+'%';
+    if(prog>=100){clearInterval(biv);barDone=true;}
+  },55);
+
+  // Letter scramble reveal
+  var resolveCount=0;
+  spans.forEach(function(sp,i){
+    var c=0;
+    setTimeout(function(){
+      sp.classList.add('on');
+      sp.style.color='#00d4aa';
+      var iv=setInterval(function(){
+        if(c<7){
+          sp.textContent=CHARS[Math.floor(Math.random()*CHARS.length)];
+          c++;
+        } else {
+          clearInterval(iv);
+          sp.textContent=NAME[i];
+          sp.style.color='#fff';
+          resolveCount++;
+          if(resolveCount===NAME.length){
+            lettersDone=true;
+            setTimeout(function(){doGlitch();},200);
+            setTimeout(function(){doGlitch();},700);
+          }
+        }
+      },50);
+    },i*95+250);
   });
+
+  function doGlitch(){
+    spans.forEach(function(sp,i){
+      setTimeout(function(){
+        sp.textContent=CHARS[Math.floor(Math.random()*CHARS.length)];
+        sp.style.color='#b44fff';
+        sp.style.transform='translateX(-3px)';
+        setTimeout(function(){
+          sp.textContent=CHARS[Math.floor(Math.random()*CHARS.length)];
+          sp.style.color='#00d4ff';
+          sp.style.transform='translateX(3px)';
+        },55);
+        setTimeout(function(){
+          sp.textContent=NAME[i];
+          sp.style.color='#fff';
+          sp.style.transform='none';
+        },130);
+      },i*22);
+    });
+  }
+
+  setTimeout(function(){sub.classList.add('on');},900);
+
+  function tryHide(){
+    if(!barDone||!lettersDone){setTimeout(tryHide,80);return;}
+    var ld=document.getElementById('ld');
+    ld.classList.add('hide');
+    setTimeout(function(){ld.style.display='none';startMain();},650);
+  }
+  setTimeout(tryHide,2800);
 })();
+
 
 function startMain(){
   // Typewriter
