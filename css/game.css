@@ -1,0 +1,101 @@
+body.garden-open { overflow: hidden; }
+
+.secret-garden-trigger {
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.secret-garden-trigger:focus-visible { outline-offset: 7px; }
+.secret-garden-trigger:hover { opacity: 1; }
+
+.garden-modal[hidden] { display: none; }
+.garden-intro[hidden], .garden-game[hidden], .garden-complete[hidden] { display: none; }
+.garden-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  color: var(--text);
+}
+.garden-backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 72%, #07120d 28%);
+  backdrop-filter: blur(12px);
+}
+.garden-shell {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(100%, 62rem);
+  height: min(92vh, 48rem);
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border: 1px solid var(--border);
+  border-radius: clamp(1.5rem, 4vw, 3rem);
+  background:
+    radial-gradient(circle at 16% 12%, color-mix(in srgb, var(--accent-soft) 80%, transparent), transparent 30%),
+    linear-gradient(145deg, var(--surface), var(--surface-strong));
+  box-shadow: 0 30px 100px rgba(0, 0, 0, .28);
+  animation: garden-arrive .55s var(--ease) both;
+}
+.garden-header { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; }
+.garden-header h2 { margin-top: .25rem; font-size: clamp(2.4rem, 6vw, 4.8rem); }
+.garden-icon-button {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform .25s var(--ease), border-color .25s ease, background-color .25s ease;
+}
+.garden-icon-button:hover { border-color: var(--accent); background: var(--accent-soft); transform: rotate(8deg) scale(1.05); }
+.garden-atmosphere { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.garden-particle { position: absolute; width: .45rem; height: .45rem; border-radius: 50%; background: var(--coral); box-shadow: 0 0 1rem var(--coral); opacity: .7; animation: garden-float 5s ease-in-out infinite; }
+.garden-particle--one { top: 22%; left: 13%; }
+.garden-particle--two { top: 31%; right: 17%; animation-delay: -1.5s; }
+.garden-particle--three { bottom: 20%; left: 28%; animation-delay: -3s; }
+.garden-particle--four { right: 32%; bottom: 14%; animation-delay: -4s; }
+.garden-intro, .garden-game { position: relative; z-index: 1; min-height: 0; }
+.garden-intro { display: grid; place-content: center; justify-items: center; gap: 1.2rem; text-align: center; }
+.garden-intro p { max-width: 25rem; font-size: clamp(1.1rem, 2vw, 1.45rem); }
+.garden-emblem { display: grid; width: 5rem; height: 5rem; place-items: center; border: 1px solid var(--accent); border-radius: 50% 45% 55% 40%; background: var(--accent-soft); color: var(--accent-strong); font-size: 2rem; animation: garden-breathe 3s ease-in-out infinite; }
+.garden-game { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: .75rem; }
+.garden-hud { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 1.5rem; color: var(--muted); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+.garden-hud strong { margin-left: .25rem; color: var(--accent-strong); font-size: 1.05rem; }
+.garden-field { position: relative; min-height: 20rem; overflow: hidden; border: 1px solid var(--border); border-radius: 2rem; background: radial-gradient(circle at 50% 110%, var(--accent-soft), transparent 52%), var(--bg); box-shadow: inset 0 0 4rem color-mix(in srgb, var(--accent-soft) 55%, transparent); }
+.garden-field:focus-visible { outline-offset: -4px; }
+.garden-object { position: absolute; display: grid; width: 3.2rem; height: 3.2rem; place-items: center; padding: 0; border: 1px solid var(--accent); border-radius: 55% 45% 50% 40%; background: var(--surface); color: var(--accent-strong); box-shadow: 0 0 0 .35rem color-mix(in srgb, var(--accent-soft) 55%, transparent), 0 .6rem 1.2rem color-mix(in srgb, var(--accent-strong) 18%, transparent); font-size: 1.35rem; cursor: pointer; animation: garden-object-in .35s var(--ease) both, garden-object-pulse 1.8s ease-in-out infinite; transition: transform .2s var(--ease), opacity .2s ease; }
+.garden-object:hover, .garden-object:focus-visible { transform: scale(1.12) rotate(8deg); }
+.garden-object.is-collected { opacity: 0; transform: scale(1.6); pointer-events: none; }
+.garden-complete { position: absolute; inset: 50% auto auto 50%; display: grid; width: min(90%, 25rem); justify-items: center; gap: .7rem; padding: 2rem; border: 1px solid var(--border); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: var(--shadow); text-align: center; transform: translate(-50%, -50%); }
+.garden-complete h3 { font-size: 2rem; }
+.garden-complete p:not(.eyebrow) { margin: 0; }
+.garden-actions { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1rem; }
+.garden-actions .button { min-height: 2.5rem; }
+.garden-hint { color: var(--muted); font-size: .78rem; }
+
+@keyframes garden-arrive { from { opacity: 0; transform: translateY(1.5rem) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes garden-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1rem); } }
+@keyframes garden-breathe { 0%, 100% { transform: rotate(-3deg) scale(1); } 50% { transform: rotate(4deg) scale(1.05); } }
+@keyframes garden-object-in { from { opacity: 0; transform: scale(.5) rotate(-20deg); } to { opacity: 1; transform: none; } }
+@keyframes garden-object-pulse { 0%, 100% { box-shadow: 0 0 0 .35rem color-mix(in srgb, var(--accent-soft) 55%, transparent), 0 .6rem 1.2rem color-mix(in srgb, var(--accent-strong) 18%, transparent); } 50% { box-shadow: 0 0 0 .55rem color-mix(in srgb, var(--accent-soft) 35%, transparent), 0 .6rem 1.5rem color-mix(in srgb, var(--accent-strong) 25%, transparent); } }
+
+@media (max-width: 600px) {
+  .garden-modal { padding: .5rem; }
+  .garden-shell { height: min(94vh, 48rem); padding: 1.1rem; border-radius: 1.5rem; }
+  .garden-header h2 { font-size: 2.5rem; }
+  .garden-field { min-height: 18rem; border-radius: 1.25rem; }
+  .garden-object { width: 3rem; height: 3rem; }
+  .garden-actions { align-items: flex-start; flex-direction: column-reverse; }
+}

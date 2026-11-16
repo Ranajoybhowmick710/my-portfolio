@@ -1,0 +1,26 @@
+body[data-layout="modern-bento"] .hero { grid-template-columns: 1fr .8fr; }
+body[data-layout="modern-bento"] .hero-copy { max-width: 42rem; }
+body[data-layout="modern-bento"] .projects-grid { grid-template-columns: repeat(12, 1fr); }
+body[data-layout="modern-bento"] .project-card { grid-column: span 5; min-height: 23rem; }
+body[data-layout="modern-bento"] .project-card:nth-child(3n + 1) { grid-column: span 7; }
+body[data-layout="modern-bento"] .project-card--offset, body[data-layout="modern-bento"] .project-card--offset.is-visible { transform: none; }
+body[data-layout="modern-bento"] .supporting-skills { grid-template-columns: repeat(6, 1fr); }
+body[data-layout="modern-bento"] .supporting-skills > div { grid-column: span 2; }
+
+body[data-layout="creative-storytelling"] .hero { min-height: 82vh; }
+body[data-layout="creative-storytelling"] .hero-copy { order: 2; }
+body[data-layout="creative-storytelling"] .hero-portrait { order: 1; justify-self: start; }
+body[data-layout="creative-storytelling"] .content-section { padding-block: 10rem; }
+body[data-layout="creative-storytelling"] .section-intro { margin-left: 12%; }
+body[data-layout="creative-storytelling"] .project-card { border-radius: 4rem 1rem 4rem 1rem; }
+body[data-layout="creative-storytelling"] .project-card:nth-child(even) { border-radius: 1rem 4rem 1rem 4rem; }
+body[data-layout="creative-storytelling"] .journey-grid { grid-template-columns: .65fr 1.35fr; }
+
+body[data-layout="minimal-developer"] { --radius-lg: .6rem; --radius-md: .45rem; --radius-sm: .3rem; }
+body[data-layout="minimal-developer"] .page-orb, body[data-layout="minimal-developer"] .leaf-sprig:not(.secret-garden-trigger), body[data-layout="minimal-developer"] .portrait-stamp { display: none; }
+body[data-layout="minimal-developer"] .hero { min-height: 70vh; padding-block: 4rem 6rem; }
+body[data-layout="minimal-developer"] .portrait-frame { border-radius: .6rem; box-shadow: none; }
+body[data-layout="minimal-developer"] .portrait-frame::after { display: none; }
+body[data-layout="minimal-developer"] .content-section { padding-block: 5rem; }
+body[data-layout="minimal-developer"] .project-card { min-height: 20rem; box-shadow: none; }
+body[data-layout="minimal-developer"] .resume-panel, body[data-layout="minimal-developer"] .guestbook-panel { box-shadow: none; }
