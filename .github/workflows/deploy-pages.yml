@@ -38,6 +38,19 @@ jobs:
           fi
           node -e "const fs = require('fs'); fs.writeFileSync('config.runtime.js', 'window.__PORTFOLIO_CONFIG__ = Object.freeze({\\n  VITE_WEB3FORMS_ACCESS_KEY: ' + JSON.stringify(process.env.WEB3FORMS_ACCESS_KEY) + '\\n});\\n');"
 
+      - name: Verify runtime configuration
+        run: |
+          if [ ! -s config.runtime.js ]; then
+            echo "::error::config.runtime.js is missing or empty."
+            exit 1
+          fi
+          if ! grep -Fq 'window.__PORTFOLIO_CONFIG__' config.runtime.js || \
+             ! grep -Fq 'VITE_WEB3FORMS_ACCESS_KEY' config.runtime.js; then
+            echo "::error::config.runtime.js does not define the expected configuration property."
+            exit 1
+          fi
+          echo "Runtime configuration exists and is non-empty."
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
