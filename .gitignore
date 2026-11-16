@@ -1,2 +1,4 @@
 .env.local
+.env
 config.local.js
+config.runtime.js

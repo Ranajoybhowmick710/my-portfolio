@@ -1,5 +1,5 @@
 const web3FormsEndpoint = 'https://api.web3forms.com/submit';
-const configuredAccessKey = window.__PORTFOLIO_CONFIG__?.VITE_WEB3FORMS_ACCESS_KEY?.trim() || '';
+const getConfiguredAccessKey = () => window.__PORTFOLIO_CONFIG__?.VITE_WEB3FORMS_ACCESS_KEY?.trim() || '';
 
 export function initContactForm() {
   const form = document.querySelector('[data-contact-form]');
@@ -40,8 +40,9 @@ export function initContactForm() {
       setStatus('Please check the highlighted fields.', 'error');
       return;
     }
+    const configuredAccessKey = getConfiguredAccessKey();
     if (!configuredAccessKey) {
-      setStatus('Contact is not configured yet. Add VITE_WEB3FORMS_ACCESS_KEY to config.local.js during development.', 'error');
+      setStatus('Contact is not configured yet. Add VITE_WEB3FORMS_ACCESS_KEY to config.local.js locally or configure the GitHub Actions secret for deployment.', 'error');
       return;
     }
 

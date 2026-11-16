@@ -1,0 +1,48 @@
+name: Deploy portfolio to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out portfolio
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Generate runtime configuration
+        env:
+          WEB3FORMS_ACCESS_KEY: ${{ secrets.WEB3FORMS_ACCESS_KEY }}
+        run: |
+          if [ -z "$WEB3FORMS_ACCESS_KEY" ]; then
+            echo "::error::WEB3FORMS_ACCESS_KEY repository secret is not configured."
+            exit 1
+          fi
+          node -e "const fs = require('fs'); fs.writeFileSync('config.runtime.js', 'window.__PORTFOLIO_CONFIG__ = Object.freeze({\\n  VITE_WEB3FORMS_ACCESS_KEY: ' + JSON.stringify(process.env.WEB3FORMS_ACCESS_KEY) + '\\n});\\n');"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

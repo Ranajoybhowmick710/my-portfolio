@@ -92,7 +92,7 @@ ranajoy-portfolio:game-high-score:v1
 
 `theme-controller.js` resolves Auto Theme using six exact Asia/Kolkata periods: Botanical Morning (05:00–09:00), Tropical Paradise (09:00–12:00), Ocean Breeze (12:00–15:00), Dusk Forest (15:00–18:00 using the Midnight Forest palette), Sunset Horizon (18:00–21:00), and Starry Night (21:00–05:00). It schedules the next boundary without requiring a refresh, while preserving a manual selection until the visitor changes it. `modern.css` is loaded as the final presentation layer so spacing, card treatment, responsive alignment, and restrained Starry Night effects can be refined without replacing the existing feature styles.
 
-`contact-form.js` reads the public Web3Forms access key from the ignored static runtime configuration in `config.local.js`. `.env.example` documents the requested `VITE_WEB3FORMS_ACCESS_KEY` name, while the no-build site avoids pretending that a bundler can read `.env` files at runtime.
+`contact-form.js` reads the public Web3Forms access key from `window.__PORTFOLIO_CONFIG__`. GitHub Actions generates the ignored `config.runtime.js` file for Pages deployments, while the optional ignored `config.local.js` file supports local development and can override the runtime value. `.env.example` remains an empty reference template because the no-build site does not read `.env` files at runtime.
 
 Storage reads must validate against allowed values. Invalid or unavailable storage must use a default without breaking the page. Theme and layout controllers must emit or apply independent state changes so changing one never resets the other.
 

@@ -39,7 +39,7 @@ Auto Theme resolves six periods using Asia/Kolkata time: Botanical Morning (05:0
 
 ## Contact configuration
 
-This is a no-build static site, so it does not read `.env` files directly. The safe reference is `.env.example`, containing `VITE_WEB3FORMS_ACCESS_KEY=YOUR_ACCESS_KEY_HERE`. For local preview, put the actual value only in the ignored `config.local.js` file:
+This is a no-build static site, so it does not read `.env` files directly. Keep `.env.example` as an empty reference template. For local preview, put the Web3Forms access key only in the ignored `config.local.js` file:
 
 ```js
 window.__PORTFOLIO_CONFIG__ = Object.freeze({
@@ -47,7 +47,24 @@ window.__PORTFOLIO_CONFIG__ = Object.freeze({
 });
 ```
 
-The form submits to `https://api.web3forms.com/submit` with the access key, name, email, subject, and message. Never copy the exposed key from the legacy files. Restart the static preview server after changing `config.local.js`, then submit a real test message. The frontend key is an intentionally public integration key; do not treat it as a server secret.
+Do not commit a real key to `config.local.js`, `.env`, `.env.local`, `.env.example`, or any other source file. The form submits to `https://api.web3forms.com/submit` with the access key, name, email, subject, and message. The frontend key is an intentionally public integration key; do not treat it as a server secret.
+
+## GitHub Pages deployment
+
+The workflow in `.github/workflows/deploy-pages.yml` deploys this directory as a static GitHub Pages site. Before the first deployment, add a repository secret named `WEB3FORMS_ACCESS_KEY` under **Settings → Secrets and variables → Actions**. The workflow reads that secret without printing it, generates the ignored `config.runtime.js` file, and includes it in the uploaded Pages artifact. `config.local.js` remains optional and is loaded after the runtime file so local development can override it.
+
+To test locally, create `config.local.js`, start the preview server, and submit the form:
+
+```powershell
+@'
+window.__PORTFOLIO_CONFIG__ = Object.freeze({
+  VITE_WEB3FORMS_ACCESS_KEY: 'paste-your-key-here'
+});
+'@ | Set-Content config.local.js
+python -m http.server 8765
+```
+
+Replace the placeholder in `config.local.js` before opening `http://127.0.0.1:8765/` and submitting a test message. For production verification, wait for the Pages workflow to complete, open the deployed site, and submit a separate test message. A successful response shows the success status and resets the form; failed or timed-out requests keep the entered values and show an error.
 
 ## Content verification
 
